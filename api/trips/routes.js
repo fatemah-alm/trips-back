@@ -7,6 +7,7 @@ const {
   tripDelete,
   tripUpdate,
   fetchSingleTrip,
+  tripCreate,
 } = require("./controllers");
 
 router.param("tripId", async (req, res, next, tripId) => {
@@ -20,6 +21,12 @@ router.param("tripId", async (req, res, next, tripId) => {
     next(err);
   }
 });
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+
+  tripCreate
+);
 
 router.get("/", getTrip);
 router.delete("/:tripId", tripDelete);

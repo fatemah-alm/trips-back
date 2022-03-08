@@ -41,3 +41,16 @@ exports.tripUpdate = async (req, res, next) => {
     next(error);
   }
 };
+exports.tripCreate = async (req, res, next) => {
+  try {
+    if (req.file) {
+      req.body.image = `/${req.file.path}`;
+      req.body.image = req.body.image.replace("\\", "/");
+    }
+    req.body.owner = req.user._id;
+    const newTrip = await Trip.create(req.body);
+    return res.status(201).json(newTrip);
+  } catch (error) {
+    next(error);
+  }
+};
