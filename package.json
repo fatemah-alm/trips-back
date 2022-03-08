@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/fatemah-alm/trips-back#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mongoose": "^6.2.4",
+    "mongoose-slug-plugin": "^2.1.0"
   }
 }
