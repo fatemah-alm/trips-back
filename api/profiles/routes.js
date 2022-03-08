@@ -3,19 +3,14 @@ const passport = require("passport");
 const router = express.Router();
 const upload = require("../../middlewares/multer");
 
-const {
-  profileCreate,
-  getProfile,
-  profileDelete,
-  profileUpdate,
-} = require("./controllers");
+const { getProfile, profileDelete, profileUpdate } = require("./controllers");
 
-router.post(
-  "/",
-  passport.authenticate("jwt", { session: false }),
+// router.post(
+//   "/",
+//   passport.authenticate("jwt", { session: false }),
 
-  profileCreate
-);
+//   profileCreate
+// );
 
 router.get("/", getProfile);
 router.delete("/:profileId", profileDelete);
