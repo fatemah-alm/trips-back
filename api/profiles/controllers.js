@@ -1,18 +1,5 @@
 const Profile = require("../../models/Profile");
 
-exports.profileCreate = async (req, res, next) => {
-  try {
-    if (req.file) {
-      req.body.image = `/${req.file.path}`;
-      req.body.image = req.body.image.replace("\\", "/");
-    }
-    req.body.owner = req.user._id;
-    const newProfile = await Profile.create(req.body);
-    return res.status(201).json(newProfile);
-  } catch (error) {
-    next(error);
-  }
-};
 exports.getProfile = async (req, res) => {
   try {
     const profile = await Product.find();
