@@ -2,7 +2,7 @@ const Profile = require("../../models/Profile");
 
 exports.getProfile = async (req, res) => {
   try {
-    const profile = await Product.find();
+    const profile = await Profile.find();
     return res.json(profile);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -23,7 +23,7 @@ exports.profileUpdate = async (req, res, next) => {
       req.body.image = `/${req.file.path}`;
       req.body.image = req.body.image.replace("\\", "/");
     }
-    const profile = await profile.findByIdAndUpdate(
+    const profile = await Profile.findByIdAndUpdate(
       { _id: req.profile.id },
       req.body,
       { new: true, runValidators: true } // returns the updated trip

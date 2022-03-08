@@ -41,6 +41,7 @@ exports.tripUpdate = async (req, res, next) => {
     next(error);
   }
 };
+
 exports.tripCreate = async (req, res, next) => {
   try {
     if (req.file) {
