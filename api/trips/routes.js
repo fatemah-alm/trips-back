@@ -1,1 +1,28 @@
-//test
+const express = require("express");
+const passport = require("passport");
+const router = express.Router();
+
+const {
+  getTrip,
+  tripDelete,
+  tripUpdate,
+  fetchSingleTrip,
+} = require("./controllers");
+
+router.param("tripId", async (req, res, next, tripId) => {
+  const trip = await fetchSingleTrip(tripId, next);
+  if (trip) {
+    req.trip = trip;
+    next();
+  } else {
+    const err = new Error("trip Not Found");
+    err.status = 404;
+    next(err);
+  }
+});
+
+router.get("/", getTrip);
+router.delete("/:tripId", tripDelete);
+router.put("/:tripId", upload.single("image"), tripUpdate);
+
+module.exports = router;
