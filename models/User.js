@@ -21,7 +21,6 @@ const UserSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
-  trips: [{ type: mongoose.Schema.Types.ObjectId, ref: "Trip" }],
 });
 
 UserSchema.plugin(mongooseSlugPlugin, { tmpl: "<%=username%>" });
