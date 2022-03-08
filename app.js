@@ -1,8 +1,10 @@
 const express = require("express");
 const userRoutes = require("./api/user/routes");
+const tripsRoutes = require("./api/trips/routes");
+const profileRoutes = require("./api/profiles/routes");
+
 const connectDb = require("./database");
 const cors = require("cors");
-
 const { urlencoded } = require("express");
 const passport = require("passport");
 const { localStrategy, jwtStrategy } = require("./middlewares/passport");
@@ -24,6 +26,8 @@ app.use((req, res, next) => {
 
 //routes
 app.use("/api/user", userRoutes);
+app.use("/api/profiles", profileRoutes);
+app.use("/api/trips", tripsRoutes);
 
 //Error handling middleware
 app.use((err, req, res, next) => {

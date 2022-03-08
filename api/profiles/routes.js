@@ -1,6 +1,14 @@
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
+const upload = require("../../middlewares/multer");
+
+const {
+  profileCreate,
+  getProfile,
+  profileDelete,
+  profileUpdate,
+} = require("./controllers");
 
 router.post(
   "/",
