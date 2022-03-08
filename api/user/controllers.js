@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../../config./keys");
 
 exports.signup = async (req, res, next) => {
+  console.log(req.body);
   const { password } = req.body;
   const saltRounds = 10;
   try {

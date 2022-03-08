@@ -1,8 +1,26 @@
 const express = require("express");
 const userRoutes = require("./api/user/routes");
 const connectDb = require("./database");
+const cors = require("cors");
+
+const { urlencoded } = require("express");
+const passport = require("passport");
+const { localStrategy, jwtStrategy } = require("./middlewares/passport");
 
 const app = express();
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(passport.initialize());
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+app.use((req, res, next) => {
+  console.log(
+    `${req.method} ${req.protocol}://${req.get("host")}${req.originalUrl}`
+  );
+  next();
+});
 
 //routes
 app.use("/api/user", userRoutes);
