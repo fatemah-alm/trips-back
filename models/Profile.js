@@ -8,5 +8,5 @@ const ProfileSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
-ProfileSchema.plugin(mongooseSlugPlugin, { tmpl: "<%=name%>" });
+// ProfileSchema.plugin(mongooseSlugPlugin, { tmpl: "<%=name%>" });
 module.exports = mongoose.model("Profile", ProfileSchema);

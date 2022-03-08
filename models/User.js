@@ -23,5 +23,5 @@ const UserSchema = new mongoose.Schema({
   profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
 });
 
-UserSchema.plugin(mongooseSlugPlugin, { tmpl: "<%=username%>" });
+// UserSchema.plugin(mongooseSlugPlugin, { tmpl: "<%=username%>" });
 module.exports = mongoose.model("User", UserSchema);
