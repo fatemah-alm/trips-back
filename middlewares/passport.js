@@ -13,7 +13,6 @@ exports.localStrategy = new LocalStrategy(async (username, password, done) => {
     const isPasswordMatch = user
       ? await bcrypt.compare(password, user.password)
       : false;
-    console.log(user);
     if (isPasswordMatch) return done(null, user);
 
     const error = {
@@ -36,10 +35,6 @@ exports.jwtStrategy = new JWTStrategy(
       return done(null, false);
     }
     try {
-      console.log(
-        "🚀 ~ file: passport.js ~ line 40 ~ jwtPayload.id",
-        jwtPayload.id
-      );
       const user = await User.findById(jwtPayload.id);
       if (user) return done(null, user);
       return null, false;

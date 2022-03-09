@@ -46,7 +46,7 @@ exports.profileUpdate = async (req, res, next) => {
       profile,
       { new: true, runValidators: true } // returns the updated profile
     );
-    console.log(updatedProfile);
+
     res.status(200).json({
       msg: "profile Updated",
       payload: updatedProfile,

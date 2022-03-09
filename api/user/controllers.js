@@ -5,12 +5,11 @@ const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../../config./keys");
 const Profile = require("../../models/Profile");
 
 exports.signup = async (req, res, next) => {
-  console.log(req.body);
   const { password } = req.body;
   const saltRounds = 10;
   try {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log("exports.signup -> hashedPassword", hashedPassword);
+    // console.log("exports.signup -> hashedPassword", hashedPassword);
     req.body.password = hashedPassword;
     const newUser = await User.create(req.body);
     const newProfile = await Profile.create({ owner: newUser._id });
