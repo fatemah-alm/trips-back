@@ -25,7 +25,7 @@ router.param("tripId", async (req, res, next, tripId) => {
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-
+  upload.single("image"),
   tripCreate
 );
 
