@@ -14,6 +14,11 @@ const { getProfile, profileDelete, profileUpdate } = require("./controllers");
 
 router.get("/", getProfile);
 router.delete("/:profileId", profileDelete);
-router.put("/:profileId", upload.single("image"), profileUpdate);
+router.put(
+  "/:profileId",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  profileUpdate
+);
 
 module.exports = router;
