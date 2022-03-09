@@ -2,6 +2,7 @@ const express = require("express");
 const userRoutes = require("./api/user/routes");
 const tripsRoutes = require("./api/trips/routes");
 const profileRoutes = require("./api/profiles/routes");
+const path = require("path");
 
 const connectDb = require("./database");
 const cors = require("cors");
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 app.use("/api/user", userRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/trips", tripsRoutes);
+app.use("/media", express.static(path.join(__dirname, "media")));
 
 //Error handling middleware
 app.use((err, req, res, next) => {
