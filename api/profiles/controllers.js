@@ -23,12 +23,18 @@ exports.profileUpdate = async (req, res, next) => {
       req.body.image = `/${req.file.path}`;
       req.body.image = req.body.image.replace("\\", "/");
     }
-    const profile = await Profile.findByIdAndUpdate(
-      { _id: req.profile.id },
-      req.body,
-      { new: true, runValidators: true } // returns the updated trip
+    const id = req.profile._id;
+    const profile = req.body;
+
+    const updatedProfile = await Profile.findByIdAndUpdate(
+      id,
+      profile,
+      { new: true, runValidators: true } // returns the updated profile
     );
-    res.status(204).end();
+    res.status(200).json({
+      msg: "profile Updated",
+      payload: updatedProfile,
+    });
   } catch (err) {
     next(error);
   }
