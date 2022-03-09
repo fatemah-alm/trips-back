@@ -1,5 +1,20 @@
 const Profile = require("../../models/Profile");
 
+exports.fetchProfile = async (profileId, next) => {
+  try {
+    const profile = await Profile.findById(profileId);
+    // retuen profile
+    if (profile) return profile;
+    else {
+      const err = new Error("profile not found");
+      err.status = 404;
+      next(err);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getProfile = async (req, res) => {
   try {
     const profile = await Profile.find();
@@ -21,7 +36,7 @@ exports.profileUpdate = async (req, res, next) => {
   try {
     if (req.file) {
       req.body.image = `/${req.file.path}`;
-      req.body.image = req.body.image.replace("\\", "/");
+      // req.body.image = req.body.image.replace("\\", "/");
     }
     const id = req.profile._id;
     const profile = req.body;
@@ -31,11 +46,12 @@ exports.profileUpdate = async (req, res, next) => {
       profile,
       { new: true, runValidators: true } // returns the updated profile
     );
+    console.log(updatedProfile);
     res.status(200).json({
       msg: "profile Updated",
       payload: updatedProfile,
     });
   } catch (err) {
-    next(error);
+    next(err);
   }
 };
