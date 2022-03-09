@@ -3,7 +3,12 @@ const passport = require("passport");
 const router = express.Router();
 const upload = require("../../middlewares/multer");
 
-const { getProfile, profileDelete, profileUpdate } = require("./controllers");
+const {
+  getProfile,
+  profileDelete,
+  profileUpdate,
+  fetchProfile,
+} = require("./controllers");
 
 // router.post(
 //   "/",
@@ -11,6 +16,12 @@ const { getProfile, profileDelete, profileUpdate } = require("./controllers");
 
 //   profileCreate
 // );
+
+router.param("profileId", async (req, res, next, profileId) => {
+  const profile = await fetchProfile(profileId, next);
+  req.profile = profile;
+  next();
+});
 
 router.get("/", getProfile);
 router.delete("/:profileId", profileDelete);
