@@ -8,6 +8,7 @@ const {
   profileDelete,
   profileUpdate,
   fetchProfile,
+  tripCreate,
 } = require("./controllers");
 
 // router.post(
@@ -24,12 +25,18 @@ router.param("profileId", async (req, res, next, profileId) => {
 });
 
 router.get("/", getProfile);
-router.delete("/:profileId", profileDelete);
 router.put(
   "/:profileId",
   passport.authenticate("jwt", { session: false }),
   upload.single("image"),
   profileUpdate
+);
+
+router.post(
+  "/:profileId/trip",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  tripCreate
 );
 
 module.exports = router;

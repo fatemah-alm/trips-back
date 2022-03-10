@@ -1,4 +1,5 @@
 const Profile = require("../../models/Profile");
+const Trip = require("../../models/Trip");
 
 exports.fetchProfile = async (profileId, next) => {
   try {
@@ -17,7 +18,7 @@ exports.fetchProfile = async (profileId, next) => {
 
 exports.getProfile = async (req, res) => {
   try {
-    const profile = await Profile.find();
+    const profile = await Profile.find().populate("owner");
     return res.json(profile);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -34,10 +35,12 @@ exports.profileDelete = async (req, res, next) => {
 
 exports.profileUpdate = async (req, res, next) => {
   try {
+    console.log("profile", req.file);
     if (req.file) {
       req.body.image = `/${req.file.path}`;
       // req.body.image = req.body.image.replace("\\", "/");
     }
+
     const id = req.profile._id;
     const profile = req.body;
 
@@ -46,6 +49,7 @@ exports.profileUpdate = async (req, res, next) => {
       profile,
       { new: true, runValidators: true } // returns the updated profile
     );
+    console.log(" update", updatedProfile);
 
     res.status(200).json({
       msg: "profile Updated",
@@ -53,5 +57,26 @@ exports.profileUpdate = async (req, res, next) => {
     });
   } catch (err) {
     next(err);
+  }
+};
+
+exports.tripCreate = async (req, res, next) => {
+  try {
+    if (req.file) {
+      req.body.image = `/${req.file.path}`;
+      // req.body.image = req.body.image.replace("\\", "/");
+    }
+    console.log("body", req.body);
+    req.body.owner = req.user._id;
+    const profile = req.profile._id;
+    const newTrip = await Trip.create(req.body);
+    console.log("newTrip", newTrip);
+    await Profile.findByIdAndUpdate(profile, {
+      $push: { trips: newTrip._id },
+    });
+    return res.status(201).json(newTrip);
+  } catch (error) {
+    console.log("error", error);
+    next(error);
   }
 };

@@ -12,14 +12,18 @@ exports.signup = async (req, res, next) => {
     // console.log("exports.signup -> hashedPassword", hashedPassword);
     req.body.password = hashedPassword;
     const newUser = await User.create(req.body);
-    const newProfile = await Profile.create({ owner: newUser._id });
+    const newProfile = await Profile.create({
+      owner: newUser._id,
+      // bio: "",
+      // image: "",
+    });
     const updatedUser = await User.findByIdAndUpdate(newUser._id, {
       profile: newProfile._id,
     });
     const payload = {
       id: updatedUser._id,
       username: updatedUser.username,
-      profile: updatedUser.profile,
+      profile: newProfile,
       exp: Date.now() + JWT_EXPIRATION_MS,
     };
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
