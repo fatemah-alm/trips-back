@@ -30,7 +30,11 @@ router.post(
 );
 
 router.get("/", getTrip);
-router.delete("/:tripId", tripDelete);
+router.delete(
+  "/:tripId",
+  passport.authenticate("jwt", { session: false }),
+  tripDelete
+);
 router.put("/:tripId", upload.single("image"), tripUpdate);
 
 module.exports = router;

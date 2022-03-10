@@ -18,10 +18,17 @@ exports.getTrip = async (req, res) => {
 };
 exports.tripDelete = async (req, res, next) => {
   try {
-    await req.trip.remove();
-    res.status(204).end();
+    console.log("user", req.user);
+    if (req.user._id == req.trip.owner) {
+      await req.trip.remove();
+      res.status(204).end();
+    } else {
+      const error = new Error("you are not the owner of this trip!");
+      error.status = 401;
+      next(error);
+    }
   } catch (err) {
-    next(error);
+    next(err);
   }
 };
 
