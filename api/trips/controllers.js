@@ -38,14 +38,21 @@ exports.tripUpdate = async (req, res, next) => {
       req.body.image = `/${req.file.path}`;
       req.body.image = req.body.image.replace("\\", "/");
     }
-    const trip = await Trip.findByIdAndUpdate(
-      { _id: req.trip.id },
-      req.body,
-      { new: true, runValidators: true } // returns the updated trip
-    );
-    res.status(204).end();
+
+    if (req.user._id == req.trip.owner) {
+      const trip = await Trip.findByIdAndUpdate(
+        { _id: req.trip.id },
+        req.body,
+        { new: true, runValidators: true } // returns the updated trip
+      );
+      res.status(204).end();
+    } else {
+      const error = new Error("you are not the owner of this trip!");
+      error.status = 401;
+      next(error);
+    }
   } catch (err) {
-    next(error);
+    next(err);
   }
 };
 
