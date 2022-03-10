@@ -17,7 +17,7 @@ exports.fetchProfile = async (profileId, next) => {
 
 exports.getProfile = async (req, res) => {
   try {
-    const profile = await Profile.find();
+    const profile = await Profile.find().populate("owner");
     return res.json(profile);
   } catch (error) {
     return res.status(500).json({ message: error.message });
