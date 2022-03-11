@@ -19,7 +19,11 @@ exports.getTrip = async (req, res) => {
 exports.tripDelete = async (req, res, next) => {
   try {
     console.log("user", req.user);
-    if (req.user._id == req.trip.owner) {
+    const { tripId } = req.params;
+
+    const trip = await Trip.findById(tripId);
+
+    if (String(req.user._id) === String(trip.owner)) {
       await req.trip.remove();
       res.status(204).end();
     } else {
