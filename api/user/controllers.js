@@ -23,22 +23,29 @@ exports.signup = async (req, res, next) => {
     const payload = {
       id: updatedUser._id,
       username: updatedUser.username,
-      profile: newProfile,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      profile: updatedUser.profile,
       exp: Date.now() + JWT_EXPIRATION_MS,
     };
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
     res.status(201).json({ token });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
 
-exports.signin = (req, res, next) => {
+exports.signin = async (req, res, next) => {
   const user = req.user;
+  console.log("user", user);
+  const profile = await Profile.findById(user.profile);
   const payload = {
     id: user._id,
     username: user.username,
-    profile: user.profile,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    profile: profile,
     exp: Date.now() + JWT_EXPIRATION_MS,
   };
   const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);

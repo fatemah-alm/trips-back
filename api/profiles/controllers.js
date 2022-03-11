@@ -18,7 +18,11 @@ exports.fetchProfile = async (profileId, next) => {
 
 exports.getProfile = async (req, res) => {
   try {
-    const profile = await Profile.find().populate("owner");
+    const profile = await Profile.find().populate({
+      path: "owner",
+      model: "User",
+      populate: { path: "profile", model: "Profile" },
+    });
     return res.json(profile);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -35,7 +39,7 @@ exports.profileDelete = async (req, res, next) => {
 
 exports.profileUpdate = async (req, res, next) => {
   try {
-    console.log("profile", req.file);
+    console.log("profile", req.body);
     if (req.file) {
       req.body.image = `/${req.file.path}`;
       // req.body.image = req.body.image.replace("\\", "/");

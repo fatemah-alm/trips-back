@@ -10,7 +10,7 @@ exports.fetchSingleTrip = async (tripId, next) => {
 };
 exports.getTrip = async (req, res) => {
   try {
-    const trip = await Trip.find();
+    const trip = await Trip.find().populate("owner");
     return res.json(trip);
   } catch (error) {
     return res.status(500).json({ message: error.message });
