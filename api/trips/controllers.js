@@ -1,4 +1,6 @@
 const Trip = require("../../models/Trip");
+const Profile = require("../../models/Profile");
+const { json } = require("body-parser");
 
 exports.fetchSingleTrip = async (tripId, next) => {
   try {
@@ -21,9 +23,14 @@ exports.tripDelete = async (req, res, next) => {
     console.log("user", req.user);
     const { tripId } = req.params;
 
-    const trip = await Trip.findById(tripId);
-
-    if (String(req.user._id) === String(trip.owner)) {
+    const trip = await Trip.findById(tripId).populate("owner");
+    if (String(req.user._id) === String(trip.owner._id)) {
+      const profileId = trip.owner.profile;
+      let foundProfile = await Profile.findById(profileId);
+      foundProfile.trips = foundProfile.trips.filter(
+        (trip) => JSON.stringify(trip) !== JSON.stringify(tripId)
+      );
+      await Profile.findByIdAndUpdate({ _id: profileId }, { ...foundProfile });
       await req.trip.remove();
       res.status(204).end();
     } else {
