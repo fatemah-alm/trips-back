@@ -25,10 +25,13 @@ exports.signup = async (req, res, next) => {
       username: updatedUser.username,
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
-      profile: updatedUser.profile,
+      profile: newProfile._id,
       exp: Date.now() + JWT_EXPIRATION_MS,
     };
     const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
+    console.log("!!!!!", payload);
+    console.log("+++++++", updatedUser.profile);
+    console.log("--------", newProfile._id);
     res.status(201).json({ token });
   } catch (error) {
     console.log(error);
@@ -45,7 +48,7 @@ exports.signin = async (req, res, next) => {
     username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
-    profile: profile,
+    profile: profile._id,
     exp: Date.now() + JWT_EXPIRATION_MS,
   };
   const token = jwt.sign(JSON.stringify(payload), JWT_SECRET);
