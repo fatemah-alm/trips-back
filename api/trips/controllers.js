@@ -49,19 +49,19 @@ exports.tripUpdate = async (req, res, next) => {
       req.body.image = `/${req.file.path}`;
       req.body.image = req.body.image.replace("\\", "/");
     }
-
-    if (req.user._id == req.trip.owner) {
-      const trip = await Trip.findByIdAndUpdate(
-        { _id: req.trip.id },
-        req.body,
-        { new: true, runValidators: true } // returns the updated trip
-      );
-      res.status(204).end();
-    } else {
-      const error = new Error("you are not the owner of this trip!");
-      error.status = 401;
-      next(error);
-    }
+    const id = req.trip._id;
+    req.body.owner = req.body.owner._id;
+    const trip = req.body;
+    console.log("??????", trip);
+    const updatedTrip = await Trip.findByIdAndUpdate(id, trip, {
+      runValidators: true,
+      new: true,
+    });
+    console.log("+++++", updatedTrip);
+    res.status(200).json({
+      msg: "trip Updated",
+      payload: updatedTrip,
+    });
   } catch (err) {
     next(err);
   }
